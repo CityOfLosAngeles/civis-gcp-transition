@@ -1,5 +1,5 @@
 """
-KYC 311 to ESRI 
+KYC Permit Data to ESRI 
 
 Move Preston's script.
 Connect to BigQuery
@@ -19,8 +19,8 @@ CREDENTIAL = "./gcp-credential.json"
 
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = f'{CREDENTIAL}'
 
-
 client = bigquery.Client()
+
 
 # Use ibis to construct SQL query
 conn = ibis.bigquery.connect(
@@ -28,30 +28,34 @@ conn = ibis.bigquery.connect(
     dataset_id = 'redshift'
 )
 
-table = conn.table('public_import311')
+table = conn.table('public_ladbs_permits')
 
 lahub_user = os.environ["LAHUB_ACC_USERNAME"]
 lahub_pass = os.environ["LAHUB_ACC_PASSWORD"]
 
-#layer = '3eb07324793142c4a0d991084b920349'
-layer = "d8de37d58881423591087ff864388eae"
-OUTPUT_FILE = "./MyLA311 Service Requests Last 6 Months.csv"
+#layer = '48fca217dd5a410bbfd6ce0abcdd3a26'
+layer = "6b2e2da7175e40bcb40edb227f20bd79"
+OUTPUT_FILE = "../Building and Safety Permits Last 6 Months.csv"
 
-def prep_311_data(expr):
+def prep_permit_data(expr):
     # There seems to be a date issue with ibis
     # Parse the string instead
     # We'll keep up to the last 2 year's of data and use pandas to further subset
     current_year = datetime.datetime.today().year
     prior_year = current_year - 1
     
-    # Cast to string
-    expr = expr.mutate(createddate=expr.createddate.cast("string"))
+    expr = expr.mutate(issue_date=expr.issue_date.cast("string"))
     
-    expr2 = expr[(expr.createddate.contains(str(current_year))) | 
-                 (expr.createddate.contains(str(prior_year)))]
+    expr2 = expr[(expr.issue_date.contains(str(current_year))) | 
+                 (expr.issue_date.contains(str(prior_year)))]
 
-    # Remove specific request types
-    expr3 = expr2[expr2.requesttype != "Homeless Encampment"]
+    # Select specific permit types
+    permit_sub_categories = ["Apartment", "Commercial"]
+    permit_categories = ["Bldg_Addition", "Bldg-New", "Bldg-Demolition"]
+    
+    expr3 = expr2[(expr2.permit_sub_type.isin(permit_sub_categories)) & 
+                 (expr2.permit_type.isin(permit_categories))]
+    
     
     # Compile shows the SQL statement
     print(ibis.bigquery.compile(expr3.limit(10)))
@@ -67,18 +71,15 @@ def prep_311_data(expr):
 def clean_data(df, file):
     # Fix dtypes
     df = df.assign(
-        createddate = pandas.to_datetime(df.createddate, errors="coerce"),
-        updateddate = pandas.to_datetime(df.updateddate, errors="coerce"),
-        closeddate = pandas.to_datetime(df.closeddate, errors="coerce"),
-        servicedate = pandas.to_datetime(df.servicedate, errors="coerce")
-    ).drop(columns = ["location"])
+        issue_date = pandas.to_datetime(df.issue_date),
+    )
     
     # Subset to keep last 6 month's of data
     today_date = datetime.datetime.today()
     six_months_ago = today_date - pandas.DateOffset(months=6)    
     
-    df2 = df[(df.createddate.notna()) & 
-             (df.createddate >= six_months_ago)]
+    df2 = df[(df.issue_date.notna()) & 
+             (df.issue_date >= six_months_ago)]
     
     # Export to CSV (use local file to upload to AGOL)
     df2.to_csv(file, index=False)
@@ -93,6 +94,6 @@ def update_geohub_layer(user, pw, layer, update_data):
     
     
 if __name__ == "__main__":
-    df = prep_311_data(table)
+    df = prep_permit_data(table)
     clean_data(df, OUTPUT_FILE)
     update_geohub_layer(lahub_user, lahub_pass, layer, OUTPUT_FILE)
