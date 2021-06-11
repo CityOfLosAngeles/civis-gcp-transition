@@ -28,7 +28,7 @@ conn = ibis.bigquery.connect(
     dataset_id = 'redshift'
 )
 
-table = conn.table('public_import311')
+table = conn.table('import311')
 
 lahub_user = os.environ["LAHUB_ACC_USERNAME"]
 lahub_pass = os.environ["LAHUB_ACC_PASSWORD"]
@@ -71,7 +71,7 @@ def clean_data(df, file):
         updateddate = pandas.to_datetime(df.updateddate, errors="coerce"),
         closeddate = pandas.to_datetime(df.closeddate, errors="coerce"),
         servicedate = pandas.to_datetime(df.servicedate, errors="coerce")
-    ).drop(columns = ["location"])
+    )
     
     # Subset to keep last 6 month's of data
     today_date = datetime.datetime.today()
@@ -90,6 +90,7 @@ def update_geohub_layer(user, pw, layer, update_data):
     flayer = geohub.content.get(layer)
     flayer_collection = FeatureLayerCollection.fromitem(flayer)
     flayer_collection.manager.overwrite(update_data)
+    print("Successfully updated AGOL")
     
     
 if __name__ == "__main__":
