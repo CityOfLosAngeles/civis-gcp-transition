@@ -33,8 +33,7 @@ table = conn.table('import311')
 lahub_user = os.environ["LAHUB_ACC_USERNAME"]
 lahub_pass = os.environ["LAHUB_ACC_PASSWORD"]
 
-#layer = '3eb07324793142c4a0d991084b920349'
-layer = "d8de37d58881423591087ff864388eae"
+layer = '3eb07324793142c4a0d991084b920349'
 OUTPUT_FILE = "./MyLA311 Service Requests Last 6 Months.csv"
 
 def prep_311_data(expr):

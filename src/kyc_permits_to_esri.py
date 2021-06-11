@@ -91,7 +91,8 @@ def update_geohub_layer(user, pw, layer, update_data):
     flayer = geohub.content.get(layer)
     flayer_collection = FeatureLayerCollection.fromitem(flayer)
     flayer_collection.manager.overwrite(update_data)
-    
+    print("Successfully updated AGOL")
+
     
 if __name__ == "__main__":
     df = prep_permit_data(table)
