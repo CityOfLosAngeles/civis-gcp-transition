@@ -28,7 +28,7 @@ conn = ibis.bigquery.connect(
     dataset_id = 'redshift'
 )
 
-table = conn.table('public_ladbs_permits')
+table = conn.table('ladbs_permits')
 
 lahub_user = os.environ["LAHUB_ACC_USERNAME"]
 lahub_pass = os.environ["LAHUB_ACC_PASSWORD"]
