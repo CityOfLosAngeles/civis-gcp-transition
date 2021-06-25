@@ -15,9 +15,9 @@ from arcgis.features import FeatureLayerCollection
 
 from google.cloud import bigquery
 
-CREDENTIAL = "./gcp-credential.json"
-
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = f'{CREDENTIAL}'
+#Set GCP credentials only for local testing 
+#CREDENTIAL = "./gcp-credential.json"
+#os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = f'{CREDENTIAL}'
 
 client = bigquery.Client()
 
@@ -35,7 +35,7 @@ lahub_pass = os.environ["LAHUB_ACC_PASSWORD"]
 
 #layer = '48fca217dd5a410bbfd6ce0abcdd3a26'
 layer = "6b2e2da7175e40bcb40edb227f20bd79"
-OUTPUT_FILE = "../Building and Safety Permits Last 6 Months.csv"
+OUTPUT_FILE = "./Building and Safety Permits Last 6 Months.csv"
 
 def prep_permit_data(expr):
     # There seems to be a date issue with ibis

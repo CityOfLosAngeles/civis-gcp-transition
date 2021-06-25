@@ -15,9 +15,9 @@ from arcgis.features import FeatureLayerCollection
 
 from google.cloud import bigquery
 
-CREDENTIAL = "./gcp-credential.json"
-
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = f'{CREDENTIAL}'
+#Set GCP credentials only for local testing 
+#CREDENTIAL = "./gcp-credential.json"
+#os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = f'{CREDENTIAL}'
 
 
 client = bigquery.Client()
