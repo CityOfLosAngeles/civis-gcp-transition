@@ -33,8 +33,8 @@ table = conn.table('public_ladbs_permits')
 lahub_user = os.environ["LAHUB_ACC_USERNAME"]
 lahub_pass = os.environ["LAHUB_ACC_PASSWORD"]
 
-#layer = '48fca217dd5a410bbfd6ce0abcdd3a26'
-layer = "6b2e2da7175e40bcb40edb227f20bd79"
+layer = '48fca217dd5a410bbfd6ce0abcdd3a26'
+#layer = "6b2e2da7175e40bcb40edb227f20bd79"
 OUTPUT_FILE = "./Building and Safety Permits Last 6 Months.csv"
 
 def prep_permit_data(expr):
