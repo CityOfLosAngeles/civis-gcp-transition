@@ -28,7 +28,7 @@ conn = ibis.bigquery.connect(
     dataset_id = 'redshift'
 )
 
-table = conn.table('ladbs_permits')
+table = conn.table('kyc_ladbs_permits')
 
 lahub_user = os.environ["LAHUB_ACC_USERNAME"]
 lahub_pass = os.environ["LAHUB_ACC_PASSWORD"]
@@ -51,10 +51,10 @@ def prep_permit_data(expr):
 
     # Select specific permit types
     permit_sub_categories = ["Apartment", "Commercial"]
-    permit_categories = ["Bldg_Addition", "Bldg-New", "Bldg-Demolition"]
+    permit_type = ["Bldg-Addition", "Bldg-New", "Bldg-Demolition"]
     
     expr3 = expr2[(expr2.permit_sub_type.isin(permit_sub_categories)) & 
-                 (expr2.permit_type.isin(permit_categories))]
+                 (expr2.permit_type.isin(permit_type))]
     
     
     # Compile shows the SQL statement
