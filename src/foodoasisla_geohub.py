@@ -1,26 +1,32 @@
-# Source: 
-# https://github.com/prestinomills/aqueduct/blob/Know_Your_Community_Pipelines/civis/geohub/foodoasisla_geohub.py
+"""
+Food Oasis to ESRI 
+
+Connect to Food Oasis API.
+Export as ESRI layer.
+"""
 import requests
 import pandas
 import os
-pwd=os.getcwd()
-import sys
-from arcgis.gis import GIS
-from arcgis.features import FeatureLayerCollection
-import intake_civis
+
+import utils
 
 lahub_user = os.environ["LAHUB_ACC_USERNAME"]
 lahub_pass = os.environ["LAHUB_ACC_PASSWORD"]
+
 URL = "https://foodoasis.la/api/stakeholderbests?categoryIds[]=1&categoryIds[]=9&latitude=33.99157326008516&longitude=-118.25853610684041&distance=5&isInactive=either&verificationStatusId=0&maxLng=-117.83718436872704&maxLat=34.193301591847344&minLng=-118.67988784495431&minLat=33.78936487151597&tenantId=1"
-output = pwd +'/Food Oasis LA.csv'
+OUTPUT_FILE = "./Food Oasis LA.csv"
 fla_layer = 'b3a61e62a98d46ecb078aca873fa1eae'
 
-
-def Flagnum(flag):
-    if(flag == True):
-        return 1;
-    else:
-        return 0
+category_type_dict = {
+    "FPF": "Food Pantry",
+    "MPF": "Meal Program",
+    "OTF": "Other",
+    "SHF": "Shelter",
+    "FBF": "Food Bank",
+    "CCF": "Care Center",
+    "UKF": "Unknown",
+    "CGF": "Community Garden",
+}
 
 def foodoasisla(json, output):
     r = requests.get(json)
@@ -54,40 +60,39 @@ def foodoasisla(json, output):
                    left_on = "id", 
                    right_on = "stakeholder_id",
                    validate = "1:m"
-              )
-    df3 = df2.drop(columns = ["categories"])
-    df3['categories'] = df3[['id','category_name']].groupby(['id'])['category_name'].transform(lambda x: ' & '.join(x))
-    df4 = df3.drop_duplicates(subset = ['id'])
+              ).drop(columns = ["categories"])
+    
+    # Create a string that captures all the possible categories for each stakeholder ID
+    df2['categories'] = (df2[['id','category_name']]
+            .groupby(['id'])['category_name'].transform(lambda x: ' & '.join(x))
+    )
 
-    df4['FPF'] = df4.apply(lambda x: 'Food Pantry' in x.categories, axis=1)
-    df4['MPF'] = df4.apply(lambda x: 'Meal Program' in x.categories, axis=1)
-    df4['OTF'] = df4.apply(lambda x: 'Other' in x.categories, axis=1)
-    df4['SHF'] = df4.apply(lambda x: 'Shelter' in x.categories, axis=1)
-    df4['FBF'] = df4.apply(lambda x: 'Food Bank' in x.categories, axis=1)
-    df4['CCF'] = df4.apply(lambda x: 'Care Center' in x.categories, axis=1)
-    df4['UKF'] = df4.apply(lambda x: 'Unknown' in x.categories, axis=1)
-    df4['CGF'] = df4.apply(lambda x: 'Community Garden' in x.categories, axis=1)
+    # Drop duplicate obs 
+    df3 = df2.drop_duplicates(subset = ['id'])
+    
+    # Create dummy variables flagging various categories
+    for key, value in category_type_dict.items():
+        df3 = df3.assign(
+            new_col = df3.apply(lambda x: value in x.categories, axis=1).astype(int)
+        ).rename(columns = {"new_col": f"{value} Flag"})
 
-    df4['Food Pantry Flag'] = df4.FPF.apply(Flagnum)
-    df4['Meal Program Flag'] = df4.MPF.apply(Flagnum)
-    df4['Other Flag'] = df4.OTF.apply(Flagnum)
-    df4['Shelter Flag'] = df4.SHF.apply(Flagnum)
-    df4['Food Bank Flag'] = df4.FBF.apply(Flagnum)
-    df4['Care Center Flag'] = df4.CCF.apply(Flagnum)
-    df4['Unknown Flag'] = df4.UKF.apply(Flagnum)
-    df4['Community Garden Flag'] = df4.CGF.apply(Flagnum)
+    keep_cols = [
+        'name','categories','address1','address2','city','state','zip','phone',
+        'latitude','longitude','website','notes',
+        'email','facebook','twitter','pinterest','linkedin',
+        'description','donationSchedule','donationDeliveryInstructions','donationNotes',
+        'covidNotes','categoryNotes','eligibilityNotes','isVerified',
+        'Food Pantry Flag', 'Meal Program Flag', 'Other Flag', 'Shelter Flag', 
+        'Food Bank Flag', 'Care Center Flag', 'Unknown Flag', 'Community Garden Flag'
+    ]
 
-    fla = df4[['name','categories','address1','address2','city','state','zip','phone','latitude','longitude','website','notes','email','facebook','twitter','pinterest','linkedin','description','donationSchedule','donationDeliveryInstructions','donationNotes','covidNotes','categoryNotes','eligibilityNotes','isVerified','Food Pantry Flag', 'Meal Program Flag', 'Other Flag', 'Shelter Flag', 'Food Bank Flag', 'Care Center Flag', 'Unknown Flag', 'Community Garden Flag']].copy()
+    fla = df3[keep_cols].copy()
     
     fla.index.name='UNIQID'
     fla.to_csv(output)
+    print("Successfully exported as csv")
 
-def update_geohub_layer(user, pw, layer, update_data):
-    geohub = GIS('https://lahubcom.maps.arcgis.com', user, pw)
-    flayer = geohub.content.get(layer)
-    flayer_collection = FeatureLayerCollection.fromitem(flayer)
-    flayer_collection.manager.overwrite(update_data)
     
 if __name__ == "__main__":
-    foodoasisla(URL,output)
-    update_geohub_layer(lahub_user, lahub_pass, fla_layer, output)
+    foodoasisla(URL, OUTPUT_FILE)
+    utils.update_geohub_layer(lahub_user, lahub_pass, fla_layer, OUTPUT_FILE)
