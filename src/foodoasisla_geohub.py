@@ -95,4 +95,4 @@ def foodoasisla(json, output):
     
 if __name__ == "__main__":
     foodoasisla(URL, OUTPUT_FILE)
-    utils.update_geohub_layer(lahub_user, lahub_pass, fla_layer, OUTPUT_FILE)
+    utils.update_geohub_layer('https://lahubcom.maps.arcgis.com', lahub_user, lahub_pass, fla_layer, OUTPUT_FILE)

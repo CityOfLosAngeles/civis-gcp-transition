@@ -86,4 +86,4 @@ def clean_data(df, file):
 if __name__ == "__main__":
     df = prep_permit_data(table)
     clean_data(df, OUTPUT_FILE)
-    utils.update_geohub_layer(lahub_user, lahub_pass, layer, OUTPUT_FILE)
+    utils.update_geohub_layer('https://lahub.maps.arcgis.com', lahub_user, lahub_pass, layer, OUTPUT_FILE)
