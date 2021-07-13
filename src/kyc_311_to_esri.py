@@ -1,8 +1,7 @@
 """
 KYC 311 to ESRI 
 
-Move Preston's script.
-Connect to BigQuery
+Connect to BigQuery.
 Export as ESRI layer.
 """
 import datetime
@@ -10,8 +9,7 @@ import ibis
 import os
 import pandas
 
-from arcgis.gis import GIS
-from arcgis.features import FeatureLayerCollection
+import utils
 
 from google.cloud import bigquery
 
@@ -84,15 +82,7 @@ def clean_data(df, file):
     print("Successfully exported as csv")
     
     
-def update_geohub_layer(user, pw, layer, update_data):
-    geohub = GIS('https://lahub.maps.arcgis.com', user, pw)
-    flayer = geohub.content.get(layer)
-    flayer_collection = FeatureLayerCollection.fromitem(flayer)
-    flayer_collection.manager.overwrite(update_data)
-    print("Successfully updated AGOL")
-    
-    
 if __name__ == "__main__":
     df = prep_311_data(table)
     clean_data(df, OUTPUT_FILE)
-    update_geohub_layer(lahub_user, lahub_pass, layer, OUTPUT_FILE)
+    utils.update_geohub_layer('https://lahub.maps.arcgis.com', lahub_user, lahub_pass, layer, OUTPUT_FILE)
