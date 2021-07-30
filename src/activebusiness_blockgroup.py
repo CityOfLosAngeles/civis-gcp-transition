@@ -13,17 +13,15 @@ from civis_aqueduct_utils.github import upload_file_to_github
 
 from sodapy import Socrata
 from arcgis.gis import GIS
-from arcgis.features.summarize_data import join_features
 from arcgis.features import FeatureLayer, FeatureLayerCollection
 from copy import deepcopy
-from IPython.display import display
 
-lahub_user = os.environ["LAHUB_ACC_USERNAME"]
-lahub_pass = os.environ["LAHUB_ACC_PASSWORD"]
+LAHUB_USER = os.environ["LAHUB_ACC_USERNAME"]
+LAHUB_PASS = os.environ["LAHUB_ACC_PASSWORD"]
 
 #---Setting the Outputs
 OUTPUT_FILE = "./Listing_of_Active_Businesses.csv"
-output_layer_name = "a7236cc62ded454c94a64e9d80d6304a"
+OUTPUT_LAYER_NAME = "a7236cc62ded454c94a64e9d80d6304a"
 
 # Grab the Socrata dataset for active businesses
 client = Socrata("data.lacity.org", None)
@@ -134,7 +132,7 @@ def top10(df):
     return top10_industries
 
 
-    '''
+'''
 ESRI stores the column names slightly differently (subject to 10 char limits)
 Use dict to map and rename (key-value pair)
 Key: dataframe's existing column name
@@ -208,7 +206,7 @@ def geohub_updates(df,user,pas, feature_layer_id,
         attributes_to_update = feature_to_be_updated.attributes
         geoid = attributes_to_update["GEOID10"]
         try:
-            for col in list(column_renaming_dict.values()):
+            for col in industry_cols:
                 '''
                 This doesn't work: 
                 feature_to_be_updated[col] = updated_values_dict[geoid][col]
@@ -256,7 +254,7 @@ if __name__ == "__main__":
     # Grab top 10 industries as a list
     top10_industries = top10(df)
     # Update AGOL, export local CSV
-    geohub_updates(df,lahub_user,lahub_pass, output_layer_name, 
+    geohub_updates(df,LAHUB_USER,LAHUB_PASS, OUTPUT_LAYER_NAME, 
         top10_industries, LAYER_RENAME_COLUMNS_DICT, OUTPUT_FILE)
     
     '''
