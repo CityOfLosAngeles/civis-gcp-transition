@@ -21,7 +21,7 @@ LAHUB_PASS = os.environ["LAHUB_ACC_PASSWORD"]
 
 #---Setting the Outputs
 OUTPUT_FILE = "./Listing_of_Active_Businesses.csv"
-OUTPUT_LAYER_NAME = "a7236cc62ded454c94a64e9d80d6304a"
+OUTPUT_LAYER_NAME = "067a9242fbef4afeb1ca0744952e5724"
 
 # Grab the Socrata dataset for active businesses
 client = Socrata("data.lacity.org", None)
@@ -257,7 +257,7 @@ if __name__ == "__main__":
     geohub_updates(df,LAHUB_USER,LAHUB_PASS, OUTPUT_LAYER_NAME, 
         top10_industries, LAYER_RENAME_COLUMNS_DICT, OUTPUT_FILE)
     
-    '''
+    
     # Upload to GitHub
     upload_file_to_github(
         TOKEN,
@@ -270,4 +270,3 @@ if __name__ == "__main__":
     )
     
     os.remove(OUTPUT_FILE)
-    '''
