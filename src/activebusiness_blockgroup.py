@@ -250,7 +250,7 @@ def geohub_updates(df,user,pas, feature_layer_id,
 # Run it all
 if __name__ == "__main__":
     # Import data and clean
-    df = dataprep(abiz, branch="active-business")
+    df = dataprep(abiz, branch="master")
     # Grab top 10 industries as a list
     top10_industries = top10(df)
     # Update AGOL, export local CSV
