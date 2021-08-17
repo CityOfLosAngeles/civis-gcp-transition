@@ -8,7 +8,7 @@ import requests
 import pandas
 import os
 
-import utils
+from common_utils import utils
 
 lahub_user = os.environ["LAHUB_ACC_USERNAME"]
 lahub_pass = os.environ["LAHUB_ACC_PASSWORD"]
