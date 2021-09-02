@@ -9,8 +9,7 @@ import ibis
 import os
 import pandas
 
-import utils
-
+from common_utils import utils
 from google.cloud import bigquery
 
 #Set GCP credentials only for local testing 

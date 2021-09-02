@@ -8,8 +8,8 @@ import geopandas as gpd
 import os
 import pandas as pd
 
-import utils
 from civis_aqueduct_utils.github import upload_file_to_github
+from common_utils import utils
 
 from sodapy import Socrata
 from arcgis.gis import GIS

@@ -16,6 +16,7 @@ import ibis
 import os
 import pandas
 
+from common_utils import utils
 from google.cloud import bigquery
 
 CREDENTIAL = "./gcp-credential.json"
