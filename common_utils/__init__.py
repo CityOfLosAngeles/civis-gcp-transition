@@ -1,9 +1,5 @@
-def _jupyter_nbextension_paths():
-    return [
-        {
-            "section": "notebook",
-            "src": "static",
-            "dest": "common_utils",
-            "require": "common_utils/extension",
-        }
-    ]
+from . import utils
+
+__version__ = "0.1.0"
+
+__all__ = ["utils"]
