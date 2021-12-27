@@ -13,15 +13,18 @@ from common_utils import utils
 from google.cloud import bigquery
 
 #Set GCP credentials only for local testing 
-#CREDENTIAL = "./gcp-credential.json"
+#CREDENTIAL = "./ita-datalake-1ba73cf7af69.json"
 #os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = f'{CREDENTIAL}'
+#GCP_PROJECT_ID = 'ita-datalake'
+#os.environ['project_id'] = f'{GCP_PROJECT_ID}'
 
-
+# Set GCP Project ID
 client = bigquery.Client()
+gcp_project = os.environ['PROJECT_ID']
 
 # Use ibis to construct SQL query
 conn = ibis.bigquery.connect(
-    project_id = 'ita-datalakepoc',
+    project_id = gcp_project,
     dataset_id = 'redshift'
 )
 
