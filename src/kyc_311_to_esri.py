@@ -14,9 +14,10 @@ from google.cloud import bigquery
 
 #Set GCP credentials only for local testing 
 #CREDENTIAL = "./ita-datalake-1ba73cf7af69.json"
+#CREDENTIAL = "./gcp-credential.json"
 #os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = f'{CREDENTIAL}'
 #GCP_PROJECT_ID = 'ita-datalake'
-#os.environ['project_id'] = f'{GCP_PROJECT_ID}'
+#os.environ['PROJECT_ID'] = f'{GCP_PROJECT_ID}'
 
 # Set GCP Project ID
 client = bigquery.Client()
@@ -33,7 +34,7 @@ table = conn.table('import311')
 lahub_user = os.environ["LAHUB_ACC_USERNAME"]
 lahub_pass = os.environ["LAHUB_ACC_PASSWORD"]
 
-layer = '3eb07324793142c4a0d991084b920349'
+layer = '981076361934439691c2b395896ca99b' #'3eb07324793142c4a0d991084b920349'
 OUTPUT_FILE = "./MyLA311 Service Requests Last 6 Months.csv"
 
 def prep_311_data(expr):
@@ -56,7 +57,8 @@ def prep_311_data(expr):
     print(ibis.bigquery.compile(expr3.limit(10)))
 
     # Execute the query and return a pandas dataframe
-    df = expr3.execute(limit=None) 
+    df = expr3.execute(limit=None)
+ 
     
     print("Successfully executed query")
     
