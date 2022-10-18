@@ -27,7 +27,7 @@ gcp_project = os.environ['PROJECT_ID']
 # Use ibis to construct SQL query
 conn = ibis.bigquery.connect(
     project_id = gcp_project,
-    dataset_id = 'redshift'
+    dataset_id = 'publicworks'
 )
 
 table = conn.table('kyc_ladbs_permits')
