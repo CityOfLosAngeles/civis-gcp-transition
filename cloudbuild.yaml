@@ -4,8 +4,8 @@ steps:
     args:
       - build
       - '--no-cache'
-      - '--build-arg PROJECT_ID'
-      - '--build-arg REPO_NAME'
+      - '--build-arg="PROJECT_ID"'
+      - '--build-arg=REPO_NAME'
       - '-t'
       - '${_DEPLOY_REGION}-docker.pkg.dev/$PROJECT_ID/${REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA'
       - .
