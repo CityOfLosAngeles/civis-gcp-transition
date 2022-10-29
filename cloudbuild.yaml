@@ -1,12 +1,18 @@
 
 steps:
   - name: gcr.io/cloud-builders/docker
-    args: ['build','--no-cache','--build-arg','PROJECT_ID=${PROJECT_ID}','--build-arg','_DEPLOY_REGION=${_DEPLOY_REGION}','-t','${_DEPLOY_REGION}-docker.pkg.dev/$PROJECT_ID/${REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA','.','-f', 'Dockerfile']
+    args: [
+      'build',
+      '--no-cache',
+      '--build-arg','PROJECT_ID=${PROJECT_ID}',
+      '--build-arg','_DEPLOY_REGION=${_DEPLOY_REGION}',
+      '-t','${_DEPLOY_REGION}-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/${_SERVICE_NAME}:$COMMIT_SHA','.',
+      '-f', 'Dockerfile']
     id: Build
   - name: gcr.io/cloud-builders/docker
     args:
       - push
-      - '${_DEPLOY_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/${_SERVICE_NAME}:$COMMIT_SHA'
+      - '${_DEPLOY_REGION}-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/${_SERVICE_NAME}:$COMMIT_SHA'
     id: Push
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
     args:
@@ -15,7 +21,7 @@ steps:
       - update
       - $_SERVICE_NAME
       - '--platform=managed'
-      - '--image=${_DEPLOY_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/${_SERVICE_NAME}:$COMMIT_SHA'
+      - '--image=${_DEPLOY_REGION}-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/${_SERVICE_NAME}:$COMMIT_SHA'
       - >-
         --labels=managed-by=gcp-cloud-build-deploy-cloud-run,commit-sha=$COMMIT_SHA,gcb-build-id=$BUILD_ID,gcb-trigger-id=$_TRIGGER_ID,$_LABELS
       - '--region=$_DEPLOY_REGION'
@@ -24,7 +30,7 @@ steps:
     entrypoint: gcloud
 timeout: 6000s
 images:
-  - '${_DEPLOY_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/${_SERVICE_NAME}:$COMMIT_SHA'
+  - '${_DEPLOY_REGION}-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/${_SERVICE_NAME}:$COMMIT_SHA'
 options:
   substitutionOption: ALLOW_LOOSE
 substitutions:
