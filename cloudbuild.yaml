@@ -1,10 +1,11 @@
+
 steps:
   - name: gcr.io/cloud-builders/docker
     args:
       - build
       - '--no-cache'
       - '-t'
-      - '${_DEPLOY_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/${_SERVICE_NAME}:$COMMIT_SHA'
+      - "${_DEPLOY_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/${_SERVICE_NAME}:$COMMIT_SHA"
       - .
       - '-f'
       - Dockerfile
