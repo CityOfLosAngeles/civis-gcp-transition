@@ -24,9 +24,10 @@ client = bigquery.Client()
 gcp_project = os.environ['PROJECT_ID']
 
 # Use ibis to construct SQL query
+# redshift
 conn = ibis.bigquery.connect(
     project_id = gcp_project,
-    dataset_id = 'redshift'
+    dataset_id = 'publicworks'
 )
 
 table = conn.table('import311')
