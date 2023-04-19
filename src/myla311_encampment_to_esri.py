@@ -7,6 +7,7 @@ Export as ESRI layer.
 import datetime
 import ibis
 import os
+import sys
 import pandas
 
 from common_utils import utils
@@ -90,6 +91,8 @@ def clean_data(df, file):
     
     
 if __name__ == "__main__":
+    print ("Running "+sys.argv[0])
     df = prep_311_data(table)
     clean_data(df, OUTPUT_FILE)
     utils.update_geohub_layer('https://lahub.maps.arcgis.com', lahub_user, lahub_pass, layer, OUTPUT_FILE)
+    print ("Run of "+sys.argv[0]+" complete")
