@@ -7,7 +7,9 @@ ARG PROJECT_ID
 FROM ${_DEPLOY_REGION}-docker.pkg.dev/${PROJECT_ID}/civis-gcp-transition/civis-gcp-transition-base
 
 #cloud sdk pre-installed on us-west2-docker.pkg.dev/ita-datalake/civis-gcp-transition/kyc-permits-to-esri
-#RUN curl -sSL https://sdk.cloud.google.com |bash
+#update to current sdk
+RUN rm -Rf /root/google-cloud-sdk
+RUN curl -sSL https://sdk.cloud.google.com |bash
 ENV PATH="/root/google-cloud-sdk/bin:${PATH}"
 
 # update release info only
