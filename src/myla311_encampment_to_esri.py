@@ -13,6 +13,13 @@ import pandas
 from common_utils import utils
 from google.cloud import bigquery
 
+import google.cloud.logging
+client=google.cloud.logging.Client()
+client.setup_logging()
+import logging
+logging.info("Start script "+sys.argv[0])
+
+
 #Set GCP credentials only for local testing 
 #CREDENTIAL = "./ita-datalake-1ba73cf7af69.json"
 #CREDENTIAL = "./gcp-credential.json"
@@ -91,8 +98,8 @@ def clean_data(df, file):
     
     
 if __name__ == "__main__":
-    print ("Running "+sys.argv[0])
+    logging.info("Running script "+sys.argv[0])
     df = prep_311_data(table)
     clean_data(df, OUTPUT_FILE)
     utils.update_geohub_layer('https://lahub.maps.arcgis.com', lahub_user, lahub_pass, layer, OUTPUT_FILE)
-    print ("Run of "+sys.argv[0]+" complete")
+    loggig.info("Run of "+sys.argv[0]+" complete")
