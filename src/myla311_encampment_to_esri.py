@@ -102,4 +102,4 @@ if __name__ == "__main__":
     df = prep_311_data(table)
     clean_data(df, OUTPUT_FILE)
     utils.update_geohub_layer('https://lahub.maps.arcgis.com', lahub_user, lahub_pass, layer, OUTPUT_FILE)
-    loggig.info("Run of "+sys.argv[0]+" complete")
+    logging.info("Run of "+sys.argv[0]+" complete")
