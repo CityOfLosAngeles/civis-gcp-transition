@@ -1,5 +1,5 @@
 """
-KYC 311 homeless encampment status to ESRI 
+social-and-human-services-lake.uhrc.lafd_PEH Related ePCR to ESRI 
 
 Connect to BigQuery.
 Export as ESRI layer.
@@ -16,7 +16,6 @@ from google.cloud import bigquery
 import google.cloud.logging
 import logging
 
-
 # Set GCP Project ID
 gcp_project = os.environ['PROJECT_ID']
 
@@ -32,15 +31,15 @@ conn = ibis.bigquery.connect(
     dataset_id = 'uhrc'
 )
 
-table = conn.table('myla311_service_request_homeless_encampment_status')
+table = conn.table('lafd_PEH Related ePCR')
 
 lahub_user = os.environ["LAHUB_ACC_USERNAME"]
 lahub_pass = os.environ["LAHUB_ACC_PASSWORD"]
 
-layer = 'b869c1780448443c84e8bda6d12ea59e'
-OUTPUT_FILE = "./myla311_service_request_homeless_encampment_status.csv"
+layer = '93a03098fe4a4240b93d7b9dde7cb7bf'
+OUTPUT_FILE = "./lafd_PEH_Related_ePCR.csv"
 
-def prep_311_data(expr):
+def prep_data(expr):
     # There seems to be a date issue with ibis
     # Parse the string instead
     # We'll keep up to the last 2 year's of data and use pandas to further subset
@@ -72,11 +71,7 @@ def prep_311_data(expr):
 def clean_data(df, file):
     # Fix dtypes
     df = df.assign(
-        createddate = pandas.to_datetime(df.createddate, errors="coerce"),
-        updateddate = pandas.to_datetime(df.updateddate, errors="coerce"),
-        closeddate = pandas.to_datetime(df.closeddate, errors="coerce"),
-        servicedate = pandas.to_datetime(df.servicedate, errors="coerce"),
-        dateservicerendered = pandas.to_datetime(df.dateservicerendered, errors="coerce")
+        Date = pandas.to_datetime(df.Date, errors="coerce"),
     )
     
     # Subset to keep last 6 month's of data
@@ -94,7 +89,7 @@ def clean_data(df, file):
     
 if __name__ == "__main__":
     logging.info("Running script "+sys.argv[0])
-    df = prep_311_data(table)
+    df = prep_data(table)
     clean_data(df, OUTPUT_FILE)
     utils.update_geohub_layer('https://lahub.maps.arcgis.com', lahub_user, lahub_pass, layer, OUTPUT_FILE)
     logging.info("Run of "+sys.argv[0]+" complete")
