@@ -31,7 +31,7 @@ conn = ibis.bigquery.connect(
     dataset_id = 'uhrc'
 )
 
-table = conn.table('lafd_PEH Related ePCR')
+table = conn.table('lapd_peh_calls_for_service')
 
 lahub_user = os.environ["LAHUB_ACC_USERNAME"]
 lahub_pass = os.environ["LAHUB_ACC_PASSWORD"]
