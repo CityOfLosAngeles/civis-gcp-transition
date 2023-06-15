@@ -52,7 +52,7 @@ def prep_permit_data(expr):
 
     # Select specific permit types
     permit_sub_categories = ["Apartment", "Commercial"]
-    permit_type = ["Bldg-Addition", "Bldg-New", "Bldg-Demolition"]
+    permit_type = ["Bldg Addition", "Bldg New", "Bldg Demolition"]
     
     expr3 = expr2[(expr2.permit_sub_type.isin(permit_sub_categories)) & 
                  (expr2.permit_type.isin(permit_type))]
