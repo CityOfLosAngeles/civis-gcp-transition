@@ -78,9 +78,6 @@ def clean_data(df, file):
     # Fix dtypes
     df = df.assign(
         Creation_Date = pandas.to_datetime(df.Creation_Date, errors="coerce"),
-        #updateddate = pandas.to_datetime(df.updateddate, errors="coerce"),
-        #closeddate = pandas.to_datetime(df.closeddate, errors="coerce"),
-        #servicedate = pandas.to_datetime(df.servicedate, errors="coerce"),
         Completion_Date = pandas.to_datetime(df.Completion_Date, errors="coerce")
     )
     
