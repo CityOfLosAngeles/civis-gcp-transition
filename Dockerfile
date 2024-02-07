@@ -8,14 +8,15 @@ FROM ${_DEPLOY_REGION}-docker.pkg.dev/${PROJECT_ID}/civis-gcp-transition/civis-g
 
 #cloud sdk pre-installed on us-west2-docker.pkg.dev/ita-datalake/civis-gcp-transition/kyc-permits-to-esri
 #update to current sdk
-RUN rm -Rf /root/google-cloud-sdk
-RUN curl -sSL https://sdk.cloud.google.com |bash
-ENV PATH="/root/google-cloud-sdk/bin:${PATH}"
+#RUN rm -Rf /root/google-cloud-sdk
+#RUN curl -sSL https://sdk.cloud.google.com |bash
+#ENV PATH="/root/google-cloud-sdk/bin:${PATH}"
+RUN gcloud components update
 
 # update release info only
 #RUN apt-get update --allow-releaseinfo-change && apt-get install -y \
 #  golang
-RUN apt-get update --allow-releaseinfo-change
+#RUN apt-get update --allow-releaseinfo-change
 WORKDIR /app
 COPY ./ ./
 #web hook server already built in image
