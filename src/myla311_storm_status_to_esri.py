@@ -68,7 +68,6 @@ def prep_311_data(expr):
 #    df = expr3.execute(limit=None)
     df = expr.execute(limit=None)
 # 
-    
     print("Successfully executed query")
     
     return df
