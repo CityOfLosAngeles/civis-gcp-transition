@@ -32,7 +32,7 @@ conn = ibis.bigquery.connect(
     dataset_id = 'uhrc'
 )
 
-table = conn.table('myla311_service_request_homeless_encampment_status')
+table = conn.table('view_myla311_services_request_homeless_encampment_status')
 
 lahub_user = os.environ["LAHUB_ACC_USERNAME"]
 lahub_pass = os.environ["LAHUB_ACC_PASSWORD"]
