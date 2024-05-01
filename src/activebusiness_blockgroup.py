@@ -259,14 +259,15 @@ if __name__ == "__main__":
     
     
     # Upload to GitHub
-    upload_file_to_github(
-        TOKEN,
-        REPO,
-        BRANCH,
-        f"ActiveBusinessBlockgroupAggregation/{OUTPUT_FILE.replace('./', '')}",
-        f"{OUTPUT_FILE}",
-        f"Update Active Businesses",
-        DEFAULT_COMMITTER,
-    )
+    # the github repo has been archived. no longer need upload_file_to_github (5/1/2024)
+    #upload_file_to_github(
+    #    TOKEN,
+    #    REPO,
+    #    BRANCH,
+    #    f"ActiveBusinessBlockgroupAggregation/{OUTPUT_FILE.replace('./', '')}",
+    #    f"{OUTPUT_FILE}",
+    #    f"Update Active Businesses",
+    #    DEFAULT_COMMITTER,
+    #)
     
     os.remove(OUTPUT_FILE)
