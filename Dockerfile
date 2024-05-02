@@ -1,5 +1,6 @@
 #Original base image
 #FROM cityofla/ita-data-civis-lab:sha-4888c7e  
+
 #new base image from current working image in Prod.
 #Allows for no new package install for minor mods of code/data
 ARG _DEPLOY_REGION
