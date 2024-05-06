@@ -1,0 +1,10 @@
+#build params
+BUILD_PARAMS="--no-cache --build-arg PROJECT_ID=${PROJECT_ID} --build-arg _DEPLOY_REGION=${_DEPLOY_REGION}"
+ 
+#       'build',
+#      '--no-cache',
+#      '--build-arg','PROJECT_ID=${PROJECT_ID}',
+#      '--build-arg','_DEPLOY_REGION=${_DEPLOY_REGION}',
+#      '-t','${_DEPLOY_REGION}-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/${_SERVICE_NAME}:$COMMIT_SHA','.',
+#      '-f', 'Dockerfile']
+#
