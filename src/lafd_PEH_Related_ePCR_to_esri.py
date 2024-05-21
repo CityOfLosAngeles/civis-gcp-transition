@@ -36,7 +36,8 @@ table = conn.table('lafd_PEH Related ePCR')
 lahub_user = os.environ["LAHUB_ACC_USERNAME"]
 lahub_pass = os.environ["LAHUB_ACC_PASSWORD"]
 
-layer = '93a03098fe4a4240b93d7b9dde7cb7bf'
+#layer = '93a03098fe4a4240b93d7b9dde7cb7bf'
+layer = '3149cc0ab4e34ea8a7252e338c112721'
 OUTPUT_FILE = "./lafd_PEH_Related_ePCR.csv"
 
 def prep_data(expr):
