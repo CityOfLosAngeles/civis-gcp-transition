@@ -36,7 +36,7 @@ table = conn.table('lafd_PEH_Related_NFIRS')
 lahub_user = os.environ["LAHUB_ACC_USERNAME"]
 lahub_pass = os.environ["LAHUB_ACC_PASSWORD"]
 
-layer = '11e00f415dd54636b75360dfca0d6158'
+layer = '24c3b88116b9415896b361f2fc53140d'
 OUTPUT_FILE = "./lafd_PEH_Related_NFIRS.csv"
 
 def prep_data(expr):
