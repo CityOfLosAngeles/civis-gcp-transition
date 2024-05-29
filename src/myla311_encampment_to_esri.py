@@ -32,15 +32,15 @@ conn = ibis.bigquery.connect(
     dataset_id = 'uhrc'
 )
 
-#table = conn.table('view_myla311_services_request_homeless_encampment_status')
-table = conn.table('myla311_service_request_homeless_encampment_status')
+table = conn.table('view_myla311_services_request_homeless_encampment_status')
+#table = conn.table('myla311_service_request_homeless_encampment_status')
 
 lahub_user = os.environ["LAHUB_ACC_USERNAME"]
 lahub_pass = os.environ["LAHUB_ACC_PASSWORD"]
 
 #layer = 'b869c1780448443c84e8bda6d12ea59e'
-#layer = '8de2a0e454124e4ca2679ea40dd0e04a'
-layer = '76babd0fb4f442648f0675ca34f3c80d'
+layer = '8de2a0e454124e4ca2679ea40dd0e04a'
+#layer = '76babd0fb4f442648f0675ca34f3c80d'
 OUTPUT_FILE = "./myla311_service_request_homeless_encampment_status.csv"
 
 def prep_311_data(expr):
