@@ -6,6 +6,7 @@ Export as ESRI layer.
 """
 import datetime
 import ibis
+import ibis_bigquery # Force-load the plugin
 import os
 import sys
 import pandas
