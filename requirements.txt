@@ -1,1 +1,2 @@
 google-cloud-logging
+ibis-framework[bigquery]
