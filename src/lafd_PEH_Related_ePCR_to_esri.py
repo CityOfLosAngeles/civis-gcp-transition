@@ -5,8 +5,7 @@ Connect to BigQuery.
 Export as ESRI layer.
 """
 import datetime
-import ibis
-import ibis_bigquery # Force-load the plugin
+import ibis_bigquery  # 💡 this is the missing link
 import os
 import sys
 import pandas
