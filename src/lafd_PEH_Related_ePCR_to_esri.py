@@ -18,6 +18,7 @@ import logging
 
 # Set GCP Project ID
 gcp_project = os.environ['PROJECT_ID']
+print (gcp_project)
 
 logging_client=google.cloud.logging.Client(project=gcp_project)
 logging_client.setup_logging()
